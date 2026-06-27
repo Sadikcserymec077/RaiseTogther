@@ -1,0 +1,56 @@
+server:
+  port: 8089
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/crowdcash}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:Password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:mohammedsadiq4850@gmail.com}
+    password: ${MAIL_PASSWORD:vegeumwkeyxxtwwg}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+jwt:
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+  expiry-ms: ${JWT_EXPIRY_MS:900000}
+  refresh-expiry-ms: ${JWT_REFRESH_EXPIRY_MS:604800000}
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:dxcjhfuxt}
+  api-key: ${CLOUDINARY_API_KEY:369685923623184}
+  api-secret: ${CLOUDINARY_API_SECRET:QAQRfgWHm5UJoOS7kHxlqy1sjss}
+
+frontend:
+  url: ${FRONTEND_URL:http://localhost:5173}
+
+razorpay:
+  key-id: ${RAZORPAY_KEY_ID:rzp_test_T6J8RMHePPRV5h}
+  key-secret: ${RAZORPAY_KEY_SECRET:H15jaKlC0CZeH16nmGDt6i62}
+
+receipt:
+  storage-dir: ./receipts/
+  number-prefix: CC
+
+ai:
+  api-key: ${AI_API_KEY:}
+  api-url: https://api.anthropic.com/v1/messages
+  model: claude-haiku-4-5-20251001

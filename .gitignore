@@ -1,0 +1,28 @@
+# Backend
+backend/target/
+backend/.env
+backend/*.log
+backend/receipts/
+backend/uploads/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
+.vscode/
+*.class
+
+# Sensitive
+*.sql.bak
+update_users.sql
+test-donation.js
+
+# PowerShell generator scripts (optional to include)
+generate_*.ps1
