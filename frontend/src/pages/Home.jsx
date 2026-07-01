@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { campaignApi } from '../api/campaignApi';
+import CampaignCard from '../components/campaign/CampaignCard';
 
 const CATEGORIES = [
   { label: 'Medical', icon: '🏥', slug: 'MEDICAL' },
@@ -18,6 +20,23 @@ const STATS = [
 ];
 
 const Home = () => {
+  const [trendingCampaigns, setTrendingCampaigns] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTrending = async () => {
+      try {
+        const { data } = await campaignApi.getTrendingCampaigns();
+        setTrendingCampaigns(data.data || []);
+      } catch (error) {
+        console.error('Error fetching trending campaigns:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTrending();
+  }, []);
+
   return (
     <div className="bg-gray-50 min-h-screen">
 
@@ -92,16 +111,19 @@ const Home = () => {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <Link
-                key={i}
-                to="/campaigns"
-                className="bg-white rounded-xl shadow-sm hover:shadow-md h-52 sm:h-64 flex flex-col items-center justify-center text-gray-400 border border-gray-100 transition-all hover:-translate-y-0.5"
-              >
-                <span className="text-4xl mb-3">🎯</span>
-                <span className="text-sm font-medium">Browse Campaigns</span>
-              </Link>
-            ))}
+            {isLoading ? (
+              [1, 2, 3, 4].map((i) => (
+                <div key={i} className="animate-pulse bg-gray-200 rounded-2xl h-80"></div>
+              ))
+            ) : trendingCampaigns.length > 0 ? (
+              trendingCampaigns.map((campaign) => (
+                <CampaignCard key={campaign.id} campaign={campaign} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-10 text-gray-500 bg-white rounded-xl border border-gray-100">
+                <p>No trending campaigns found at the moment.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
