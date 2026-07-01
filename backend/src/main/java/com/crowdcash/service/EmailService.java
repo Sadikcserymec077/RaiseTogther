@@ -88,6 +88,10 @@ public class EmailService {
                 "<p>Your receipt is attached to this email.</p>" +
                 "<a href=\"" + frontendUrl + "/campaigns/" + donation.getCampaign().getId() + "\">View Campaign</a>" +
                 "<p style='color:#6b7280;font-size:12px;margin-top:20px;'>RaiseTogether — Empowering dreams through community funding.</p>";
+        // Render Free Tier blocks outbound SMTP traffic.
+        // Bypassing to prevent 60-second connection timeouts.
+        System.out.println("Bypassing donation email for Render deployment: " + donation.getDonor().getEmail());
+        /*
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -106,6 +110,7 @@ public class EmailService {
         } catch (Exception e) {
             System.err.println("Failed to send donation confirmation email: " + e.getMessage());
         }
+        */
     }
 
     public void sendGoalAchievedEmail(com.crowdcash.model.Campaign campaign) {
@@ -119,6 +124,10 @@ public class EmailService {
     }
 
     private void sendHtmlEmail(String to, String subject, String htmlBody) {
+        // Render Free Tier blocks outbound SMTP traffic. 
+        // Bypassing to prevent 60-second connection timeouts.
+        System.out.println("Bypassing HTML email for Render deployment: " + to);
+        /*
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -132,5 +141,6 @@ public class EmailService {
             System.err.println("Failed to send email to: " + to);
             e.printStackTrace();
         }
+        */
     }
 }
