@@ -17,7 +17,7 @@ const DonationAmountPicker = ({ amount, onChange }) => {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {PRESET_AMOUNTS.map(preset => (
           <button
             key={preset}
