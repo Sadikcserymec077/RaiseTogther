@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { campaignApi } from '../api/campaignApi';
+import { leaderboardApi } from '../api/leaderboardApi';
 import CampaignCard from '../components/campaign/CampaignCard';
 
 const CATEGORIES = [
@@ -21,20 +22,25 @@ const STATS = [
 
 const Home = () => {
   const [trendingCampaigns, setTrendingCampaigns] = useState([]);
+  const [topDonors, setTopDonors] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTrending = async () => {
+    const fetchHomeData = async () => {
       try {
-        const { data } = await campaignApi.getTrendingCampaigns();
-        setTrendingCampaigns(data.data || []);
+        const [campaignsRes, donorsRes] = await Promise.all([
+          campaignApi.getTrendingCampaigns(),
+          leaderboardApi.getTopDonors('all')
+        ]);
+        setTrendingCampaigns(campaignsRes.data.data || []);
+        setTopDonors(donorsRes.data.data?.slice(0, 3) || []);
       } catch (error) {
-        console.error('Error fetching trending campaigns:', error);
+        console.error('Error fetching home data:', error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchTrending();
+    fetchHomeData();
   }, []);
 
   return (
@@ -141,20 +147,26 @@ const Home = () => {
               View Leaderboard &rarr;
             </Link>
           </div>
-          <div className="sm:w-1/2 grid grid-cols-3 gap-3 w-full max-w-xs sm:max-w-none">
-            {[
-              { name: 'Donor 1', amount: '₹1,00,000', border: 'border-yellow-400', delay: '' },
-              { name: 'Donor 2', amount: '₹75,000', border: 'border-gray-200', delay: 'mt-4' },
-              { name: 'Donor 3', amount: '₹50,000', border: 'border-amber-500', delay: 'mt-8' },
-            ].map((d) => (
-              <div key={d.name} className={`bg-white p-3 rounded-xl shadow text-center border-t-4 ${d.border} ${d.delay}`}>
-                <div className="w-10 h-10 bg-indigo-100 rounded-full mx-auto mb-2 flex items-center justify-center text-indigo-600 font-bold text-sm">
-                  {d.name[0]}
-                </div>
-                <p className="font-bold text-xs text-gray-800">{d.name}</p>
-                <p className="text-xs text-gray-500">{d.amount}</p>
+          <div className="sm:w-1/2 grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-xs sm:max-w-none">
+            {topDonors.length > 0 ? (
+              topDonors.map((d, index) => {
+                const borders = ['border-yellow-400', 'border-gray-200', 'border-amber-500'];
+                const delays = ['', 'sm:mt-4', 'sm:mt-8'];
+                return (
+                  <div key={d.userId} className={`bg-white p-3 rounded-xl shadow text-center border-t-4 ${borders[index] || 'border-indigo-400'} ${delays[index] || ''}`}>
+                    <div className="w-10 h-10 bg-indigo-100 rounded-full mx-auto mb-2 flex items-center justify-center text-indigo-600 font-bold text-sm">
+                      {d.userName ? d.userName[0].toUpperCase() : 'A'}
+                    </div>
+                    <p className="font-bold text-xs text-gray-800 truncate" title={d.userName}>{d.userName || 'Anonymous'}</p>
+                    <p className="text-xs text-gray-500">₹{d.totalAmount.toLocaleString()}</p>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="col-span-3 text-center text-indigo-100 bg-white/10 rounded-xl p-4">
+                <p className="text-sm">Be the first top donor!</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>

@@ -25,7 +25,7 @@ const AiAssistPanel = ({ campaignData, onApplySuggestion }) => {
     setSuggestions(null);
 
     try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
       const prompt = `You are an expert crowdfunding campaign consultant. Analyze this campaign and provide structured suggestions.
 
 Campaign Details:
@@ -80,7 +80,7 @@ Respond with ONLY valid JSON in this exact format:
     setChatLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
       const context = `You are CrowdCash AI, a helpful assistant for crowdfunding campaigns. Current campaign: ${campaignData?.title || 'Untitled'} (${campaignData?.category || 'General'}).`;
       const result = await model.generateContent(`${context}\n\nUser: ${userMsg}`);
       const aiText = result.response.text();
