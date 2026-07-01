@@ -54,3 +54,17 @@ ai:
   api-key: ${AI_API_KEY:}
   api-url: https://api.anthropic.com/v1/messages
   model: claude-haiku-4-5-20251001
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/crowdcash}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:Password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect

@@ -28,7 +28,7 @@ public class Campaign {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(length = 1000000)
     private String story;
 
     @Column(nullable = false, precision = 15, scale = 2)
