@@ -74,11 +74,13 @@ public class AuthService {
                 });
 
         user.getRoles().add(userRole);
+        user.setEmailVerified(true);
         user = userRepository.save(user);
 
-        // Generate a real token using JWT based on email
-        String token = jwtUtil.generateTokenFromUsername(user.getEmail());
-        emailService.sendVerificationEmail(user, token);
+        // Render Free Tier blocks SMTP ports (587), so we auto-verify the user 
+        // and skip sending the email to prevent the 60-second connection timeout.
+        // String token = jwtUtil.generateTokenFromUsername(user.getEmail());
+        // emailService.sendVerificationEmail(user, token);
 
         // Create notification
         try {
