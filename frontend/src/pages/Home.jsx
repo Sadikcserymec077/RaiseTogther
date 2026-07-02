@@ -153,12 +153,12 @@ const Home = () => {
                 const borders = ['border-yellow-400', 'border-gray-200', 'border-amber-500'];
                 const delays = ['', 'sm:mt-4', 'sm:mt-8'];
                 return (
-                  <div key={d.userId || index} className={`bg-white dark:bg-gray-800 p-3 rounded-xl shadow text-center border-t-4 ${borders[index] || 'border-indigo-400'} ${delays[index] || ''}`}>
-                    <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900 rounded-full mx-auto mb-2 flex items-center justify-center text-indigo-600 dark:text-indigo-300 font-bold text-sm">
+                  <div key={d.userId || index} className={`bg-white p-3 rounded-xl shadow text-center border-t-4 ${borders[index] || 'border-indigo-400'} ${delays[index] || ''}`}>
+                    <div className="w-10 h-10 bg-indigo-100 rounded-full mx-auto mb-2 flex items-center justify-center text-indigo-600 font-bold text-sm">
                       {d.displayName ? d.displayName[0].toUpperCase() : 'A'}
                     </div>
-                    <p className="font-bold text-xs text-gray-800 dark:text-gray-100 truncate" title={d.displayName}>{d.displayName || 'Anonymous'}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">₹{(d.totalDonated || 0).toLocaleString()}</p>
+                    <p className="font-bold text-xs text-gray-800 truncate" title={d.displayName}>{d.displayName || 'Anonymous'}</p>
+                    <p className="text-xs text-gray-500">₹{(d.totalDonated || 0).toLocaleString()}</p>
                   </div>
                 );
               })

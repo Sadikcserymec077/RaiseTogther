@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useTheme } from '../../context/ThemeContext';
 import Avatar from '../common/Avatar';
 import NotificationsDropdown from './NotificationsDropdown';
-import { LogOut, User, Menu, X, ShieldCheck, LayoutList, Heart, Receipt, Trophy, AlertTriangle, Moon, Sun } from 'lucide-react';
+import { LogOut, User, Menu, X, ShieldCheck, LayoutList, Heart, Receipt, Trophy, AlertTriangle } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated, isAdmin } = useAuth();
-  const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -20,7 +18,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700 sticky top-0 z-50 transition-colors duration-200">
+    <nav className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
@@ -29,17 +27,14 @@ const Navbar = () => {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">C</span>
               </div>
-              <span className="font-bold text-xl text-gray-900 dark:text-white">RaiseTogether</span>
+              <span className="font-bold text-xl text-gray-900">RaiseTogether</span>
             </Link>
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden sm:flex sm:items-center sm:space-x-6">
-            <button onClick={toggleTheme} className="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <Link to="/" className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Discover</Link>
-            <Link to="/leaderboard" className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors font-medium flex items-center gap-1">
+          <div className="hidden sm:flex sm:items-center sm:space-x-8">
+            <Link to="/" className="text-gray-600 hover:text-primary transition-colors font-medium">Discover</Link>
+            <Link to="/leaderboard" className="text-gray-600 hover:text-primary transition-colors font-medium flex items-center gap-1">
               <Trophy size={16} /> Leaderboard
             </Link>
             
@@ -56,10 +51,10 @@ const Navbar = () => {
                   </button>
 
                   {isProfileDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 border border-gray-100 dark:border-gray-700 ring-1 ring-black ring-opacity-5">
-                      <div className="px-4 py-2 border-b dark:border-gray-700">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{user.name}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-100 ring-1 ring-black ring-opacity-5">
+                      <div className="px-4 py-2 border-b">
+                        <p className="text-sm font-medium text-gray-900 truncate">{user.name}</p>
+                        <p className="text-xs text-gray-500 truncate">{user.email}</p>
                       </div>
                       <Link 
                         to="/profile" 
@@ -141,16 +136,10 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="sm:hidden border-t dark:border-gray-700 bg-white dark:bg-gray-800">
-          <div className="pt-2 pb-3 flex items-center px-4 justify-between border-b dark:border-gray-700">
-            <span className="text-gray-700 dark:text-gray-300 font-medium">Dark Mode</span>
-            <button onClick={toggleTheme} className="p-2 text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-full">
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-          </div>
+        <div className="sm:hidden border-t">
           <div className="pt-2 pb-3 space-y-1">
-            <Link to="/" className="block px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => setIsMenuOpen(false)}>Discover</Link>
-            <Link to="/leaderboard" className="block px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => setIsMenuOpen(false)}>Leaderboard</Link>
+            <Link to="/" className="block px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50" onClick={() => setIsMenuOpen(false)}>Discover</Link>
+            <Link to="/leaderboard" className="block px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50" onClick={() => setIsMenuOpen(false)}>Leaderboard</Link>
           </div>
           
           {isAuthenticated ? (
