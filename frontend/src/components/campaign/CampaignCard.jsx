@@ -12,9 +12,9 @@ const CampaignCard = ({ campaign }) => {
   } = campaign;
 
   return (
-    <Link to={`/campaigns/${id}`} className="group block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+    <Link to={`/campaigns/${id}`} className="group block bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
       {/* Image */}
-      <div className="relative h-48 overflow-hidden bg-gray-100">
+      <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-700">
         {thumbnailImage ? (
           <img
             src={thumbnailImage}
@@ -22,7 +22,7 @@ const CampaignCard = ({ campaign }) => {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100">
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900">
             <span className="text-4xl">🚀</span>
           </div>
         )}
@@ -36,10 +36,10 @@ const CampaignCard = ({ campaign }) => {
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 group-hover:text-primary transition-colors">{title}</h3>
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-1 line-clamp-2 group-hover:text-primary transition-colors">{title}</h3>
 
         {location && (
-          <p className="text-xs text-gray-400 flex items-center gap-1 mb-3">
+          <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1 mb-3">
             <MapPin size={12} /> {location}
           </p>
         )}
@@ -48,16 +48,16 @@ const CampaignCard = ({ campaign }) => {
 
         <div className="flex justify-between items-center text-sm mb-3">
           <div>
-            <p className="font-bold text-gray-900">{formatCompact(raisedAmount)}</p>
-            <p className="text-xs text-gray-400">raised of {formatCompact(goalAmount)}</p>
+            <p className="font-bold text-gray-900 dark:text-gray-100">{formatCompact(raisedAmount)}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500">raised of {formatCompact(goalAmount)}</p>
           </div>
           <div className="text-right">
-            <p className="font-bold text-gray-900">{progressPercent?.toFixed(0)}%</p>
-            <p className="text-xs text-gray-400">funded</p>
+            <p className="font-bold text-gray-900 dark:text-gray-100">{progressPercent?.toFixed(0)}%</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500">funded</p>
           </div>
         </div>
 
-        <div className="flex justify-between text-xs text-gray-400 border-t pt-3">
+        <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500 border-t border-gray-100 dark:border-gray-700 pt-3">
           <span className="flex items-center gap-1"><Users size={12} /> {donorCount} donors</span>
           <span className="flex items-center gap-1">
             <Clock size={12} />
