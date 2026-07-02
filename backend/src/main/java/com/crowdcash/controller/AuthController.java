@@ -1,6 +1,7 @@
 package com.crowdcash.controller;
 
 import com.crowdcash.dto.*;
+import com.crowdcash.dto.request.GoogleLoginRequest;
 import com.crowdcash.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,12 @@ public class AuthController {
     public ResponseEntity<ApiResponse<LoginResponse>> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         LoginResponse response = authService.authenticateUser(loginRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Login successful", response));
+    }
+
+    @PostMapping("/google-login")
+    public ResponseEntity<ApiResponse<LoginResponse>> googleLogin(@Valid @RequestBody GoogleLoginRequest googleLoginRequest) {
+        LoginResponse response = authService.googleLogin(googleLoginRequest);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Google login successful", response));
     }
 
     @PostMapping("/refresh-token")

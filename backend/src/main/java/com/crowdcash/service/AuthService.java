@@ -21,8 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.ResponseEntity;
 
 @Service
 public class AuthService {
@@ -126,6 +129,73 @@ public class AuthService {
                 .email(user.getEmail())
                 .roles(roles)
                 .build();
+    }
+
+    @Transactional
+    public LoginResponse googleLogin(com.crowdcash.dto.request.GoogleLoginRequest googleLoginRequest) {
+        String token = googleLoginRequest.getToken();
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "https://oauth2.googleapis.com/tokeninfo?id_token=" + token;
+
+        try {
+            ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
+            Map<String, Object> payload = response.getBody();
+
+            if (payload == null || !payload.containsKey("email")) {
+                throw new BadRequestException("Invalid Google token");
+            }
+
+            String email = (String) payload.get("email");
+            String name = (String) payload.get("name");
+            String picture = (String) payload.get("picture");
+            Boolean emailVerified = Boolean.parseBoolean(String.valueOf(payload.get("email_verified")));
+
+            if (!emailVerified) {
+                throw new BadRequestException("Google email is not verified.");
+            }
+
+            User user = userRepository.findByEmail(email).orElse(null);
+
+            if (user == null) {
+                user = new User();
+                user.setEmail(email);
+                user.setName(name);
+                user.setProfilePicture(picture);
+                user.setEmailVerified(true);
+                // Set a random password for OAuth users
+                user.setPassword(encoder.encode(UUID.randomUUID().toString()));
+
+                Role userRole = roleRepository.findByName("ROLE_USER")
+                        .orElseGet(() -> {
+                            Role role = new Role();
+                            role.setName("ROLE_USER");
+                            return roleRepository.save(role);
+                        });
+                user.getRoles().add(userRole);
+                user = userRepository.save(user);
+            }
+
+            // Generate tokens manually since they didn't use UsernamePasswordAuthenticationToken
+            String jwt = jwtUtil.generateTokenFromUsername(user.getEmail());
+            RefreshToken refreshToken = createRefreshToken(user.getId());
+
+            List<String> roles = user.getRoles().stream()
+                    .map(Role::getName)
+                    .collect(Collectors.toList());
+
+            return LoginResponse.builder()
+                    .accessToken(jwt)
+                    .refreshToken(refreshToken.getToken())
+                    .userId(user.getId())
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .profilePicture(user.getProfilePicture())
+                    .roles(roles)
+                    .build();
+
+        } catch (Exception e) {
+            throw new BadRequestException("Failed to verify Google token: " + e.getMessage());
+        }
     }
 
     public RefreshToken createRefreshToken(Long userId) {

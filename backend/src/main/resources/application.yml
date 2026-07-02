@@ -55,6 +55,10 @@ ai:
   api-url: https://api.anthropic.com/v1/messages
   model: claude-haiku-4-5-20251001
 
+oauth2:
+  google:
+    client-id: ${GOOGLE_CLIENT_ID:621225094854-4br774i0l3nlss7t7vh1ooi7nqjb4892.apps.googleusercontent.com}
+
 ---
 spring:
   config:

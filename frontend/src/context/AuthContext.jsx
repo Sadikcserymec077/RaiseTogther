@@ -39,6 +39,15 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     const { data } = await authApi.login(credentials);
+    return handleAuthSuccess(data);
+  };
+
+  const googleLogin = async (token) => {
+    const { data } = await authApi.googleLogin(token);
+    return handleAuthSuccess(data);
+  };
+
+  const handleAuthSuccess = (data) => {
     if (data.success) {
       localStorage.setItem('accessToken', data.data.accessToken);
       localStorage.setItem('refreshToken', data.data.refreshToken);
@@ -47,7 +56,8 @@ export const AuthProvider = ({ children }) => {
         id: data.data.userId,
         name: data.data.name,
         email: data.data.email,
-        roles: data.data.roles
+        roles: data.data.roles,
+        profilePicture: data.data.profilePicture
       };
       
       setUser(userData);
@@ -68,7 +78,7 @@ export const AuthProvider = ({ children }) => {
   const isAdmin = user?.roles?.includes('ROLE_ADMIN');
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout, isAuthenticated, isAdmin, loading }}>
+    <AuthContext.Provider value={{ user, setUser, login, googleLogin, logout, isAuthenticated, isAdmin, loading }}>
       {children}
     </AuthContext.Provider>
   );
