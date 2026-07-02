@@ -11,6 +11,20 @@ const ShareButtons = ({ url, title }) => {
     else toast.error('Could not copy link');
   };
 
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title,
+          text: `Check out this amazing campaign: ${title}`,
+          url: fullUrl,
+        });
+      } catch (err) {
+        console.error('Error sharing:', err);
+      }
+    }
+  };
+
   const buttons = [
     { label: 'WhatsApp', emoji: '💬', color: 'bg-green-500 hover:bg-green-600', action: () => shareToWhatsApp(fullUrl, title) },
     { label: 'Facebook', emoji: '📘', color: 'bg-blue-600 hover:bg-blue-700', action: () => shareToFacebook(fullUrl) },
@@ -18,6 +32,10 @@ const ShareButtons = ({ url, title }) => {
     { label: 'LinkedIn', emoji: '💼', color: 'bg-blue-700 hover:bg-blue-800', action: () => shareToLinkedIn(fullUrl, title) },
     { label: 'Copy', emoji: '🔗', color: 'bg-gray-200 hover:bg-gray-300 !text-gray-700', action: handleCopy },
   ];
+
+  if (navigator.share) {
+    buttons.unshift({ label: 'Share', emoji: '📲', color: 'bg-indigo-600 hover:bg-indigo-700', action: handleNativeShare });
+  }
 
   return (
     <div>
