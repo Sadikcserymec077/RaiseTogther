@@ -135,10 +135,14 @@ public class AuthService {
     public LoginResponse googleLogin(com.crowdcash.dto.request.GoogleLoginRequest googleLoginRequest) {
         String token = googleLoginRequest.getToken();
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://oauth2.googleapis.com/tokeninfo?id_token=" + token;
+        String url = "https://www.googleapis.com/oauth2/v3/userinfo";
+
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        headers.setBearerAuth(token);
+        org.springframework.http.HttpEntity<String> entity = new org.springframework.http.HttpEntity<>(headers);
 
         try {
-            ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
+            ResponseEntity<Map> response = restTemplate.exchange(url, org.springframework.http.HttpMethod.GET, entity, Map.class);
             Map<String, Object> payload = response.getBody();
 
             if (payload == null || !payload.containsKey("email")) {
