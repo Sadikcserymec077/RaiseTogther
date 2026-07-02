@@ -100,6 +100,7 @@
 
 ### 👤 Authentication & User Management
 - ✅ JWT Authentication with Access + Refresh Token rotation
+- ✅ Google OAuth 2.0 Single Sign-On (SSO)
 - ✅ BCrypt password hashing
 - ✅ Email verification on registration
 - ✅ Forgot password via email reset link
@@ -138,6 +139,7 @@
 - ✅ Threaded comments with nested replies
 - ✅ Q&A section (ask questions, creator answers)
 - ✅ Campaign reporting (fraud, spam, abuse)
+- ✅ Native Web Share API integration (Mobile-optimized sharing)
 - ✅ Social sharing (WhatsApp, Facebook, LinkedIn, X, Copy Link)
 - ✅ Leaderboard (Top Donors, Top Campaigns, Top Creators)
 
